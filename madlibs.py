@@ -18,44 +18,41 @@ print("\n MADLIBS GENERATOR TERMINATOR 9000 SKYNET ENTERPRISE DECLASSIFIED \n")
 
 # Ask for input & Assign the variables to input
 
+def read_input():
+    try:
+        return input()
+    except EOFError:
+        print("\n Input closed, ending program \n")
+        raise SystemExit(0)
+
 print("\n insert a verb \n")
-madlibs_input_1_verb = input()
+madlibs_input_1_verb = read_input()
 
 print("\n insert adjective \n")
-madlibs_input_2_adjective = input()
+madlibs_input_2_adjective = read_input()
 
 print("\n insert noun \n")
-madlibs_input_3_noun = input()
+madlibs_input_3_noun = read_input()
 
 print("\n verb -ed action \n")
-madlibs_input_4_verbed = input()
+madlibs_input_4_verbed = read_input()
 
 print("\n insert verb \n")
-madlibs_input_5_verb = input()
+madlibs_input_5_verb = read_input()
 
 # Generate madlib based on the input provided by the user. make the craziest possible story mathematically possible using secretive logic
 
 # Print statements added auto strips if too much whitespace is added to the code.
 
 print("\n Generating MadLib \n")
-print ("Madlib: " + "Joe is Going to " + madlibs_input_1_verb.strip() + "," + " Joe is really " + madlibs_input_2_adjective.strip() + "," + " Unfortunately, Joe got into trouble with " + madlibs_input_3_noun.strip() + "," + " If Joe were to leave now, he would certaintly get " + madlibs_input_4_verbed.strip() + "," + " Joe now has " + madlibs_input_5_verb.strip() + ".")
+print ("Madlib: " + "Joe is Going to " + madlibs_input_1_verb.strip() + "," + " Joe is really " + madlibs_input_2_adjective.strip() + "," + " Unfortunately, Joe got into trouble with " + madlibs_input_3_noun.strip() + "," + " If Joe were to leave now, he would certainly get " + madlibs_input_4_verbed.strip() + "," + " Joe now has " + madlibs_input_5_verb.strip() + ".")
 
-
-# Crash() is a buffer overflow waiting to happen
-# Buffer = region of memory that holds temporary data while it is being moved from one place to another
-# Buffer Overflow = overwriting near memory addresses beyond the allocated memory, I predict python has guards in place but this is embedded in the code.
-def crash():
-    try:
-        crash()
-    except:
-        crash()
 
 # Add secret part
-if madlibs_input_3_noun == "Joe":
+if madlibs_input_3_noun.strip() == "Joe":
     
     print("You can't do that!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
     time.sleep(1)
-    crash()
 else:
     print("What happens if you put the only noun as Joe?")
 
