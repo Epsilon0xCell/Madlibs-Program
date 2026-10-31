@@ -45,6 +45,9 @@ egg.
 
 ## Files
 
-- `madlibs.py`: the whole program.
+- `madlibs.py`: the whole program. The story builder sits in its own
+  function, separate from the prompts, so it can be tested directly.
+- `test_madlibs.py`: tests (`python3 -m unittest`), covering the
+  story text, the easter egg, and early end of input.
 - `logo.png`, `banner.png`: generated branding.
 - `LICENSE`: license file.
