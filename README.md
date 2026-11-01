@@ -1,9 +1,17 @@
-![Madlibs Program banner](banner.png)
+![Intro: the empty tavern before the song, a guitarra waiting on a chair and one candle already lit](intro-banner.png)
+
 
 # Madlibs-Program
 
+![Banner](banner.png)
+
+![Scene](scene.svg)
+
 A small interactive Mad Libs program in Python. It asks for five words
 and builds a one-paragraph story about Joe from them.
+
+
+![Separator](sep-heavy.svg)
 
 ## Run
 
@@ -22,6 +30,8 @@ The program prompts for, in order:
 3. a noun
 4. a verb in the -ed form
 5. another verb
+
+> **Keeper's note, pinned beside the door:** the five answers are used exactly as typed, apart from stripped leading and trailing whitespace. Nothing checks that a verb really is a verb, and the prompt order above is the order the story slots fill in.
 
 Leading and trailing whitespace on each answer is stripped before the
 story is printed. The story template is fixed; only the five words

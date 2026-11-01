@@ -3,160 +3,78 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Madlibs Program: what it is, how it runs, where it stops</title>
-<meta name="description" content="Madlibs Program is one of my projects. The README in the repo is short, so this page sticks to what the files themselves show.">
+<title>Madlibs-Program: the tavern song book</title>
+<meta name="description" content="An interactive Python program that prompts for five words, then prints a one paragraph story about a man named Joe built from those answers.">
 <style>
-:root {
-  --bg: #1a0c0c; --panel: #2a1412; --ink: #f0e6d6;
-  --mut: #381b18;
-  --acc: #c9a24b; --acc2: #94b2c4;
-  --line: #2a1412;
-}
-* { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--ink);
-  font-family: 'Trebuchet MS', sans-serif; line-height: 1.55; }
-code, pre, .mono { font-family: 'Courier New', monospace; }
-a { color: var(--acc2); }
-.hero { padding: 3rem 6vw 1rem; }
-.hero img.banner { width: 100%; height: auto; border: 1px solid var(--line);
-  border-radius: 10px; }
-.logo { width: 92px; height: 92px; border-radius: 18px;
-  border: 1px solid var(--line); }
-h1 { font-size: 2.4rem; margin: 0.4em 0 0.1em; }
-h2 { border-bottom: 2px solid var(--acc); padding-bottom: 0.2em;
-  margin-top: 2em; }
-.lede { font-size: 1.15rem; max-width: 62ch; }
-main { padding: 0 6vw 3rem; max-width: 1180px; margin: 0 auto; }
-.grid { display: grid; gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
-.card { background: var(--panel); border: 1px solid var(--line);
-  border-radius: 12px; padding: 1rem 1.2rem; }
-.card.pop { animation: rise 0.7s ease both; }
-@keyframes rise { from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: none; } }
-pre.code { background: #101014; color: #e8e6df; padding: 1rem 1.2rem;
-  border-radius: 12px; overflow-x: auto; font-size: 0.86rem;
-  border-left: 5px solid var(--acc); }
-table { border-collapse: collapse; width: 100%; }
-td, th { border-bottom: 1px solid var(--line); padding: 0.45rem 0.6rem;
-  text-align: left; }
-.shots { display: grid; gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-.shots img { width: 100%; height: auto; border: 1px solid var(--line);
-  border-radius: 10px; background: #f4f1e8; }
-footer { padding: 2rem 6vw; border-top: 1px solid var(--line);
-  color: var(--mut); }
-.rail { display: flex; gap: 1.2rem; align-items: flex-start; }
-.rail nav { position: sticky; top: 1rem; min-width: 180px; }
-@media (max-width: 760px) { .rail { flex-direction: column; }
-  .rail nav { position: static; } }
-@media (prefers-reduced-motion: reduce) {
-  .card.pop { animation: none; } * { scroll-behavior: auto; } }
+@font-face{font-family:'Allison';src:url('fonts/Allison-Regular.ttf') format('truetype')}
+@font-face{font-family:'Alegreya Sans';src:url('fonts/AlegreyaSans-Regular.ttf') format('truetype')}
+@font-face{font-family:'Alegreya Sans';src:url('fonts/AlegreyaSans-Bold.ttf') format('truetype');font-weight:700}
+*{box-sizing:border-box}
+body{margin:0;background:#14163c;color:#f0e8d6;font-family:'Alegreya Sans',sans-serif;line-height:1.6}
+.hero{position:relative;max-width:940px;margin:0 auto;padding:34px 22px 6px}
+.hero img{width:100%;height:auto;display:block}
+.flame{position:absolute;top:52px;right:44px;width:14px;height:22px;background:#ffbe5a;border-radius:50% 50% 50% 50%/62% 62% 38% 38%;animation:flick 1.9s ease-in-out infinite}
+@keyframes flick{0%,100%{transform:scaleY(1) rotate(-1.5deg)}50%{transform:scaleY(1.12) rotate(1.5deg)}}
+h1{font-family:'Allison',cursive;font-weight:400;font-size:3.4rem;margin:.25em 0 .1em;color:#f0e8d6}
+.lede{font-size:1.13rem;max-width:64ch}
+main{max-width:940px;margin:0 auto;padding:8px 22px 46px}
+h2{font-family:'Allison',cursive;font-weight:400;font-size:2.3rem;color:#eec96e;margin:1.4em 0 .3em}
+.page{background:rgba(240,232,214,.96);color:#23255c;border-radius:4px;padding:20px 24px;margin:16px 0;position:relative}
+.page::after{content:'';position:absolute;right:0;top:0;border-style:solid;border-width:0 26px 26px 0;border-color:#14163c #14163c #5c80a8 #5c80a8}
+.verse{display:flex;justify-content:space-between;gap:14px;border-bottom:1px solid #c9c2ae;padding:8px 2px}
+.blank{display:inline-block;min-width:130px;border-bottom:2px solid #b08a3e;color:#8a6a24;text-align:center}
+.given{color:#8a6a24;font-weight:700}
+.story{font-size:1.12rem}
+.slate{display:inline-block;background:#1b1e4a;color:#f0e8d6;font-family:'Allison',cursive;font-size:1.55rem;padding:.34em 1.1em .18em;border:1px solid #c49e4a;outline-offset:3px;text-decoration:none;transform:rotate(0deg);transition:transform .15s}
+.slate:hover{box-shadow:inset 0 0 0 2px #c49e4a, -14px 0 22px -12px rgba(255,190,90,.85)}
+.slate:active{transform:rotate(2deg)}
+a.ring{color:#eec96e;text-decoration:none}
+a.ring::before{content:'';display:inline-block;width:.62em;height:.62em;border:2px solid #c49e4a;border-radius:50%;margin-right:.45em;vertical-align:-.05em}
+a.ring:hover{text-decoration:underline;text-decoration-style:double}
+a.ring:hover::before{background:#5c80a8}
+.strings{border:0;border-top:2px solid #9a9aa2;position:relative;margin:34px 0 4px}
+.strings::after{content:'';position:absolute;left:50%;top:-11px;width:16px;height:16px;margin-left:-10px;border:3px solid #c49e4a;border-radius:50%;background:#14163c}
+pre{background:#10122e;color:#f0e8d6;padding:16px 20px;overflow-x:auto;border:1px solid #c49e4a;font-family:Menlo,monospace}
+.ringmark{color:#c49e4a}
+footer{max-width:940px;margin:0 auto;padding:6px 22px 40px;color:#b9bcce;font-size:.92rem}
 </style>
 </head>
-<body class="layout-poster">
-<!-- This page exists for Madlibs-Program alone: the layout (poster),
-     the colors, and the type were picked for this project, not
-     shared with the other project pages. The code block below is
-     copied from the file it names, line for line. If it looks
-     plain, that is because the project is plain, and I would
-     rather the page match the project than dress it up. The one
-     thing I will not do here is oversell: what this project does
-     not do is stated on the page, not hidden from it. -->
+<body>
 <header class="hero">
-  <img class="logo" src="assets/logo.png" alt="Madlibs Program logo">
-  <img class="banner" src="assets/banner.png" alt="">
-  <h1>Madlibs Program</h1>
-  <p class="mono"><a href="https://github.com/Epsilon0xCell/Madlibs-Program">github.com/Epsilon0xCell/Madlibs-Program</a></p>
+<img src="https://raw.githubusercontent.com/Epsilon0xCell/Madlibs-Program/main/intro-banner.png" alt="The empty tavern, a guitarra waiting on a chair, one candle lit">
+<span class="flame" aria-hidden="true"></span>
+<h1>Madlibs-Program</h1>
+<p class="lede">An interactive Python program that prompts for words, then prints a one paragraph story about a man named Joe built from those answers. This page is the tavern song book: the keeper writes down who sang, and what the verses asked for.</p>
+<p><a class="slate" href="https://github.com/Epsilon0xCell/Madlibs-Program">The repo on GitHub</a> <a class="slate" href="#run">Running it</a></p>
 </header>
-
 <main>
-  <section class="rail">
-    <nav aria-label="on this page">
-      <p class="mono"><a href="#run">Run it</a><br>
-      <a href="#files">The files</a><br>
-      <a href="#sheets">The sheets</a><br>
-      <a href="https://github.com/Epsilon0xCell/Madlibs-Program">The repo</a></p>
-    </nav>
-    <div>
-      <p class="lede">Madlibs Program is one of my projects. The README in the repo is short, so this page sticks to what the files themselves show.</p>
-      <div class="grid">
-        <div class="card pop"><h3>What it is</h3>
-          <p>Madlibs Program: 3 files, 65 counted
-          lines across Python 64, Markdown 1. One job, done in the
-          open, in files you can read.</p></div>
-        <div class="card pop"><h3>The biggest piece</h3>
-          <p><code>madlibs.py</code> carries the most
-          lines. If the project grows, that file is where the growth
-          lands first, for better or worse.</p></div>
-        <div class="card pop"><h3>The honest gap</h3>
-          <p>No test files yet. That is the honest gap, and the roadmap in the visuals folder says what the first one should cover.</p></div>
-      </div>
-      <section id="run">
-        <h2>Run it</h2>
-        <p>The repo README has the exact commands for this one. The
-        shape is the shape for most of my projects: clone it, read the
-        top file first so you know what will happen, then run it on
-        something you do not mind breaking.</p>
-        <p class="mono">$ git clone https://github.com/Epsilon0xCell/Madlibs-Program.git<br>$ cd Madlibs-Program</p>
-      </section>
-      
-  <section aria-label="real code">
-    <h2>The code, as it sits in the repo</h2>
-    <p>From <code>madlibs.py</code>, line 45 on. I did
-    not tidy it for the page. What you see is what the file has.</p>
-    <pre class="code"><code># Buffer = region of memory that holds temporary data while it is being moved from one place to another
-# Buffer Overflow = overwriting near memory addresses beyond the allocated memory, I predict python has guards in place but this is embedded in the code.
-def crash():
-    try:
-        crash()
-    except:
-        crash()
-
-# Add secret part
-if madlibs_input_3_noun == &quot;Joe&quot;:
-    
-    print(&quot;You can&#x27;t do that!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!&quot;)
-    time.sleep(1)
-    crash()
-else:
-    print(&quot;What happens if you put the only noun as Joe?&quot;)
-
-
-
-# Future ideas set up program to check if input is correct based on a database containing nouns, verbs, and adjectives to ensure the program makes sense when printing.</code></pre>
-  </section>
-      <section id="files">
-        <h2>The files that matter</h2>
-        <table><tr><th>File</th><th>Lines</th></tr>
-        <tr><td><code>madlibs.py</code></td><td>64</td></tr>
-        <tr><td><code>README.md</code></td><td>1</td></tr>
-        <tr><td><code>LICENSE</code></td><td>0</td></tr>
-        </table>
-        <p>Names doing the work: <span class="mono">crash</span>.</p>
-      </section>
-      <section id="sheets">
-        <h2>Drawn by hand</h2>
-        <p>I sketch my projects on notebook paper so I have to
-        understand them well enough to draw them. The full set,
-        with the counts and how they were counted, is the
-        <a href="https://github.com/Epsilon0xCell/Madlibs-Program/tree/main/Madlibs-Program-Visuals">Madlibs-Program-Visuals</a>
-        folder in the repo. Nothing is drawn over the binder holes.
-        That is a rule, not a style.</p>
-        <div class="shots">
-          <img src="assets/architecture.png" alt="Hand drawn architecture sheet for Madlibs Program">
-          <img src="assets/flowchart.png" alt="Hand drawn flowchart sheet for Madlibs Program">
-          <img src="assets/product-map.png" alt="Hand drawn product map sheet for Madlibs Program">
-        </div>
-      </section>
-    </div>
-  </section>
+<hr class="strings">
+<h2>First page: how a round works, laid out as verses</h2>
+<div class="page">
+<p>The program asks for five words, one at a time, in this order. Each line is a verse, and the blank stays blank until the player fills it.</p>
+<div class="verse"><span>Verse one, a verb</span><span class="blank">&nbsp;</span></div>
+<div class="verse"><span>Verse two, an adjective</span><span class="blank">&nbsp;</span></div>
+<div class="verse"><span>Verse three, a noun</span><span class="blank">&nbsp;</span></div>
+<div class="verse"><span>Verse four, a verb ending in ed</span><span class="blank">&nbsp;</span></div>
+<div class="verse"><span>Verse five, one final verb</span><span class="blank">&nbsp;</span></div>
+<p>Leading and trailing whitespace on each answer is stripped before the story is printed. The words are used exactly as typed apart from that: nothing checks that a verb really is a verb.</p>
+</div>
+<hr class="strings">
+<h2>Second page: the reveal</h2>
+<div class="page">
+<p class="story">Madlib: Joe is Going to <span class="given">swim</span>, Joe is really <span class="given">brave</span>, Unfortunately, Joe got into trouble with <span class="given">a dragon</span>, If Joe were to leave now, he would certainly get <span class="given">grounded</span>, Joe now has <span class="given">a bicycle</span>.</p>
+<p>The fixed story text stays indigo; the supplied words are picked out in brass. One story, one character, and the template never changes. Only the five words do.</p>
+<p>Two endings hide in the noun verse. Enter the noun <b>Joe</b>, exact case after stripping, and the program prints a warning line and ends after a one second pause. Any other noun ends with a hint pointing at that secret. If the input closes early at any prompt, the program prints <i>Input closed, ending program</i> and exits with status 0.</p>
+</div>
+<hr class="strings">
+<h2 id="run">Third page: running it</h2>
+<p>Python 3 required, standard library only, no extra libraries. Every run starts fresh and asks again.</p>
+<pre>python3 madlibs.py</pre>
+<p>Tests live in <span class="ringmark">test_madlibs.py</span> and run with <code>python3 -m unittest</code>, covering the story text, the secret noun, and early end of input. The story builder sits in its own function in <code>madlibs.py</code>, separate from the prompts, so it can be tested directly.</p>
+<p><a class="ring" href="https://github.com/Epsilon0xCell/Madlibs-Program/tree/main/Madlibs-Program-Visuals">The visuals folder in the repo</a></p>
 </main>
 <footer>
-  <p>Madlibs Program is one of my projects. This page was written
-  from the repo itself on 2026-10-30: the counts are the
-  repo's counts, the code is the repo's code, and the gaps are the
-  repo's gaps.</p>
+<p>Colophon, in the keeper's hand at the back of the book: files are <code>madlibs.py</code>, <code>test_madlibs.py</code>, <code>logo.png</code>, <code>banner.png</code>, and <code>LICENSE</code>. Fonts: Allison and Alegreya Sans, both SIL Open Font License 1.1, license texts beside the font files. Lettering follows the loose brush script character named in the project prose; no reference font is embedded.</p>
 </footer>
 </body>
 </html>
